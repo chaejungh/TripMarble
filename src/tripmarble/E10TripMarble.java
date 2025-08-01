@@ -3,6 +3,7 @@ package tripmarble;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 class Marble extends JFrame {
     User user1;
@@ -42,13 +43,13 @@ class Marble extends JFrame {
     private CityBlock sydney;
     private CityBlock berlin;
     private CityBlock istanbul;
-    
 
-    class Block{
 
-    // === [주사위 기능 시작] ===
-    // === [주사위 기능 끝] ===
-        
+    class Block {
+
+        // === [주사위 기능 시작] ===
+        // === [주사위 기능 끝] ===
+
         int x;
         int y;
         String cityName = "블럭";
@@ -67,7 +68,8 @@ class Marble extends JFrame {
                     ", height=" + height +
                     '}';
         }
-        public void play (){
+
+        public void play() {
 
 
         }
@@ -100,6 +102,7 @@ class Marble extends JFrame {
             this.color = Color.GRAY;
         }
     }
+
     class AirportBlock extends Block {
         public AirportBlock(int x, int y) {
             this.x = x;
@@ -108,28 +111,32 @@ class Marble extends JFrame {
             this.color = Color.GRAY;
         }
     }
-    class User {
+
+    class User {  //건물 리스트 추가 필요
         int x = 0;
         int y = 750;
-        int money;
-        User(int x,int y){
+        int cash;
+
+        User(int x, int y) {
             this.x = x;
             this.y = y;
         }
     }
+
     enum GoldKey {
         세칸뒤("세칸뒤로 이동"), 두칸뒤("두칸뒤로 이동"), 한칸뒤("한칸뒤로 이동"),
         세칸앞("세칸앞으로 이동"), 두칸앞("두칸앞으로 이동"), 한칸앞("한칸앞으로 이동"),
-        세계여행("Airport로 이동"), 서울로("서울로 이동"), 출발지로("Start로 이동"),
-        세계일주("세계일주를 합니다."),
-        노벨평화상("노벨 평화상 수상 +30만원"), 복권당첨("복권당첨 +20만원"), 장학금("장학금 획득 +10만원"),
-        반액대매출("가장 비싼 건물을 반값에 팝니다."),
-        해외유학("해외유학 -10만원"), 병원비("병원 입원비 -5만원"), 과속운전("과속운전 벌금 -5만원"),
-        건물유지관리비("건물 유지관리비 납부. -(소유건물 x2)만원"),
-        우대권1("우대권"), 우대권2("우대권");
+        세계여행("Airport로 이동"), 서울로("서울로 이동"), 출발지로("Start로 이동");
+//        세계일주("세계일주를 합니다."),
+//        노벨평화상("노벨 평화상 수상 +30만원"), 복권당첨("복권당첨 +20만원"), 장학금("장학금 획득 +10만원"),
+//        반액대매출("가장 비싼 건물을 반값에 팝니다."),
+//        해외유학("해외유학 -10만원"), 병원비("병원 입원비 -5만원"), 과속운전("과속운전 벌금 -5만원"),
+//        건물유지관리비("건물 유지관리비 납부. -(소유건물 x2)만원"),
+//        우대권1("우대권"), 우대권2("우대권");
 
 
         String text;
+
         GoldKey(String text) {
             this.text = text;
         }
@@ -143,20 +150,114 @@ class Marble extends JFrame {
             this.y = y;
 
         }
+
         @Override
         public void play() {
-            GoldKey pick=allGoldKey.remove(0); //{c,c,c,c,c,..,c,c}
-            if(!(pick==GoldKey.우대권1 || pick==GoldKey.우대권2)) allGoldKey.add(pick);
-            //#1 골드키 블럭에 올라갔을때
+
+            //일반블럭
+
+            //황금열쇠
+            if ((user1.x == goldKeyBlock1.x && user1.y == goldKeyBlock1.y) ||
+                    (user1.x == goldKeyBlock2.x && user1.y == goldKeyBlock2.y) ||
+                    (user1.x == goldKeyBlock3.x && user1.y == goldKeyBlock3.y) ||
+                    (user1.x == goldKeyBlock4.x && user1.y == goldKeyBlock4.y)) {
+                GoldKey pick = allGoldKey.remove(0); //{c,c,c,c,c,..,c,c}
+                //  if (!(pick == GoldKey.우대권1 || pick == GoldKey.우대권2)) allGoldKey.add(pick);
 
 
-            //#2 일반 맵에 올랄갔을때
+                switch (pick) {
+
+                    //유저이동                      기존 이동 에서 가져오기
+                    case 세칸뒤:
+                        user1.x = user1.x - 3;
+                        user1.y = user1.y - 3;
+                        System.out.println("뽑힘");
+                        break;
+                    case 두칸뒤:
+                        user1.x = user1.x - 2;
+                        user1.y = user1.y - 2;
+                        System.out.println("뽑힘");
+                        break;
+                    case 한칸뒤:
+                        user1.x = user1.x - 1;
+                        user1.y = user1.y - 1;
+                        System.out.println("뽑힘");
+                        break;
+                    case 한칸앞:
+                        user1.x = user1.x + 1;
+                        user1.y = user1.y + 1;
+                        System.out.println("뽑힘");
+                        break;
+                    case 두칸앞:
+                        user1.x = user1.x + 2;
+                        user1.y = user1.y + 2;
+                        System.out.println("뽑힘");
+                        break;
+                    case 세칸앞:
+                        user1.x = user1.x + 3;
+                        user1.y = user1.y + 3;
+                        System.out.println("뽑힘");
+                        break;
+
+                    //특정장소로 이동
+                    case 세계여행:
+                        user1.x = airport.x;
+                        user1.y = airport.y;                   //Airport
+                        System.out.println("뽑힘");
+                        break;
+                    case 서울로:
+                        user1.x = seoul.x;
+                        ;
+                        user1.y = seoul.y;                        //seoul
+                        System.out.println("뽑힘");
+                        break;
+                    case 출발지로:
+                        user1.x = startBlock.x;
+                        ;
+                        user1.y = startBlock.y;             //startBlock
+                        System.out.println("뽑힘");
+                        break;
+                    //case 세계일주 -> //getcash.Charity; cash.Charity=0;  +20만
+
+                    //현금++
+//                case 노벨평화상 ->  //user cash++ 30만
+//                case 복권당첨 ->    //user cash++ 20만
+//                case 장학금 ->      //user cash++ 10만
+//                case 반액대매출 ->   //user.sell highest building, user.cash += cost((this.building)/2)
+//
+//                //현금--
+//                case 해외유학 ->  //user cash-- 10만
+//                case 병원비 ->    //user cash-- 5만
+//                case 과속운전 ->  //user cash-- 5만
+//                case 건물유지관리비 -> // user.cash = cash - (user.소유중 건물 x2만)
+//
+//                //우대권    boolean type
+//                case 우대권 -> //user.우대권 true _ 통행료 = 0;      우대권은 게임내에 2개까지 존재
+                    //case 우대권2 -> //user.우대권 true _ 통행료 = 0;      우대권은 게임내에 2개까지 존재
+                    //~~
+                }
+            }
+}
+
+
+        //private LinkedList<GoldKey> deck; //골드키를 뽑고 다시 넣을 덱
+
+        private List<GoldKey> playerHands; //플레이어가 소유한 카드 : 우대권
+
+        public GoldKeyBlock() {
+            //enum의 모든 카드 추가
+            for (GoldKey goldkey : GoldKey.values()) {
+                allGoldKey.add(goldkey);
+            }
+            Collections.shuffle(allGoldKey);  //카드 섞기
+
 
         }
     }
 
     class CityBlock extends Block {
         enum CityClass {아시아, 유럽, 명승지, 대도시, 한국}
+
         int buildingPrice;
         CityClass cityClass;
 
@@ -166,17 +267,33 @@ class Marble extends JFrame {
             this.cityName = cityName;
             this.cityClass = cityClass;
             switch (cityClass) {
-                case 아시아 -> { color = Color.RED; buildingPrice = 5; }
-                case 유럽 -> { color = Color.YELLOW; buildingPrice = 10; }
-                case 명승지 -> { color = Color.GREEN; buildingPrice = 15; }
-                case 대도시 -> { color = Color.BLUE; buildingPrice = 20; }
-                case 한국 -> { color = Color.BLACK; buildingPrice = 100; }
+                case 아시아 -> {
+                    color = Color.RED;
+                    buildingPrice = 5;
+                }
+                case 유럽 -> {
+                    color = Color.YELLOW;
+                    buildingPrice = 10;
+                }
+                case 명승지 -> {
+                    color = Color.GREEN;
+                    buildingPrice = 15;
+                }
+                case 대도시 -> {
+                    color = Color.BLUE;
+                    buildingPrice = 20;
+                }
+                case 한국 -> {
+                    color = Color.BLACK;
+                    buildingPrice = 100;
+                }
             }
         }
     }
 
     class MyCanvas extends Canvas {
         private Image offScreenImage;
+
         @Override
         public void update(Graphics g) {
             // update는 paint보다 먼저 호출되므로 여기서 버퍼에 먼저 그린다
@@ -204,7 +321,7 @@ class Marble extends JFrame {
                 offG.drawString(b.cityName, b.x + 75, b.y + 62);
             }
             offG.setColor(Color.cyan);
-            offG.fillRect(user1.x, user1.y, 50,50);
+            offG.fillRect(user1.x, user1.y, 50, 50);
             g.drawImage(offScreenImage, 0, 0, this);
 
             offG.dispose(); // 리소스 정리
@@ -214,67 +331,68 @@ class Marble extends JFrame {
     }
 
     private Canvas canvas;
-    
-    public Marble(){
+
+    public Marble() {
         super("TripMarble");
         System.out.println("시작");
-        this.user1 = new User(0,750);
-        this.charityPay = new CharityBlock(0,0,"기부금 기부");
+        this.user1 = new User(0, 750);
+        new GoldKeyBlock();
+        this.charityPay = new CharityBlock(0, 0, "기부금 기부");
         blockArrayList.add(charityPay);
-        this.hongkong = new CityBlock(0,125,"Hongkong", CityBlock.CityClass.아시아);
+        this.hongkong = new CityBlock(0, 125, "Hongkong", CityBlock.CityClass.아시아);
         blockArrayList.add(hongkong);
-        this.goldKeyBlock1 = new GoldKeyBlock(0,125*2);
+        this.goldKeyBlock1 = new GoldKeyBlock(0, 125 * 2);
         blockArrayList.add(goldKeyBlock1);
-        this.beijing = new CityBlock(0,125*3, "Beijing", CityBlock.CityClass.아시아);
+        this.beijing = new CityBlock(0, 125 * 3, "Beijing", CityBlock.CityClass.아시아);
         blockArrayList.add(beijing);
-        this.athens = new CityBlock(0,125*4,"Athens", CityBlock.CityClass.유럽);
+        this.athens = new CityBlock(0, 125 * 4, "Athens", CityBlock.CityClass.유럽);
         blockArrayList.add(athens);
-        this.tokyo = new CityBlock(0,125*5,"Tokyo", CityBlock.CityClass.대도시);
+        this.tokyo = new CityBlock(0, 125 * 5, "Tokyo", CityBlock.CityClass.대도시);
         blockArrayList.add(tokyo);
 
 
         this.startBlock = new StartBlock();
         blockArrayList.add(startBlock);
-        this.seoul = new CityBlock(200,125*6,"Seoul", CityBlock.CityClass.한국);
+        this.seoul = new CityBlock(200, 125 * 6, "Seoul", CityBlock.CityClass.한국);
         blockArrayList.add(seoul);
-        this.taipei = new CityBlock(200*2,125*6,"Taipei", CityBlock.CityClass.아시아);
+        this.taipei = new CityBlock(200 * 2, 125 * 6, "Taipei", CityBlock.CityClass.아시아);
         blockArrayList.add(taipei);
-        this.goldKeyBlock2 = new GoldKeyBlock(200*3,125*6);
+        this.goldKeyBlock2 = new GoldKeyBlock(200 * 3, 125 * 6);
         blockArrayList.add(goldKeyBlock2);
-        this.stockholm = new CityBlock(200*4,125*6, "Stockholm", CityBlock.CityClass.유럽);
+        this.stockholm = new CityBlock(200 * 4, 125 * 6, "Stockholm", CityBlock.CityClass.유럽);
         blockArrayList.add(stockholm);
-        this.madrid = new CityBlock(200*5,125*6,"Madrid", CityBlock.CityClass.명승지);
+        this.madrid = new CityBlock(200 * 5, 125 * 6, "Madrid", CityBlock.CityClass.명승지);
         blockArrayList.add(madrid);
-        this.charityGet = new CharityBlock(200*6,125*6,"기부금 받기");
+        this.charityGet = new CharityBlock(200 * 6, 125 * 6, "기부금 받기");
         blockArrayList.add(charityGet);
 
 
-        this.newYork = new CityBlock(200*6,125*5,"NewYork", CityBlock.CityClass.대도시);
+        this.newYork = new CityBlock(200 * 6, 125 * 5, "NewYork", CityBlock.CityClass.대도시);
         blockArrayList.add(newYork);
-        this.singapore = new CityBlock(200*6,125*4,"Singapore", CityBlock.CityClass.아시아);
+        this.singapore = new CityBlock(200 * 6, 125 * 4, "Singapore", CityBlock.CityClass.아시아);
         blockArrayList.add(singapore);
-        this.goldKeyBlock3 = new GoldKeyBlock(200*6,125*3);
+        this.goldKeyBlock3 = new GoldKeyBlock(200 * 6, 125 * 3);
         blockArrayList.add(goldKeyBlock3);
-        this.cairo = new CityBlock(200*6,125*2,"Cairo", CityBlock.CityClass.아시아);
+        this.cairo = new CityBlock(200 * 6, 125 * 2, "Cairo", CityBlock.CityClass.아시아);
         blockArrayList.add(cairo);
-        this.rome = new CityBlock(200*6,125,"Rome", CityBlock.CityClass.대도시);
+        this.rome = new CityBlock(200 * 6, 125, "Rome", CityBlock.CityClass.대도시);
         blockArrayList.add(rome);
-        this.airport = new AirportBlock(200*6,0);
+        this.airport = new AirportBlock(200 * 6, 0);
         blockArrayList.add(airport);
 
-        this.buenosAires =new CityBlock(200*5,0,"Buenos Aires", CityBlock.CityClass.명승지);
+        this.buenosAires = new CityBlock(200 * 5, 0, "Buenos Aires", CityBlock.CityClass.명승지);
         blockArrayList.add(buenosAires);
-        this.sydney = new CityBlock(200*4,0,"Sydney", CityBlock.CityClass.대도시);
+        this.sydney = new CityBlock(200 * 4, 0, "Sydney", CityBlock.CityClass.대도시);
         blockArrayList.add(sydney);
-        this.goldKeyBlock4 = new GoldKeyBlock(200*3,0);
+        this.goldKeyBlock4 = new GoldKeyBlock(200 * 3, 0);
         blockArrayList.add(goldKeyBlock4);
-        this.berlin = new CityBlock(200*2,0,"Berlin", CityBlock.CityClass.유럽);
+        this.berlin = new CityBlock(200 * 2, 0, "Berlin", CityBlock.CityClass.유럽);
         blockArrayList.add(berlin);
-        this.istanbul = new CityBlock(200,0,"Istanbul", CityBlock.CityClass.아시아);
+        this.istanbul = new CityBlock(200, 0, "Istanbul", CityBlock.CityClass.아시아);
         blockArrayList.add(istanbul);
 
         this.start = blockArrayList.indexOf(startBlock);
-        
+
         canvas = new MyCanvas();
 
         // === [주사위 기능 시작] ===
@@ -305,13 +423,14 @@ class Marble extends JFrame {
         this.setBounds(0, 0, 1920, 1080);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
+
     }
 
     public void move(int diceRoll) {
         System.out.println("주사위 값: " + diceRoll + "칸 이동");
-        start+=diceRoll;
-        if (start>=24){
-            start-=24;
+        start += diceRoll;
+        if (start >= 24) {
+            start -= 24;
         }
         Block userPos = blockArrayList.get(start);
         user1.x = userPos.x;
