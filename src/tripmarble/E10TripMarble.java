@@ -175,8 +175,21 @@ class Marble extends JFrame{
         blockArrayList.add(goldKeyBlock3);
         CityBlock cairo = new CityBlock(200*6,125*2,"Cairo", CityBlock.CityClass.아시아);
         blockArrayList.add(cairo);
+        CityBlock rome = new CityBlock(200*6,125,"Rome", CityBlock.CityClass.대도시);
+        blockArrayList.add(rome);
+        AirportBlock airport = new AirportBlock(200*6,0);
+        blockArrayList.add(airport);
 
-
+        CityBlock buenosAires =new CityBlock(200*5,0,"Buenos Aires", CityBlock.CityClass.명승지);
+        blockArrayList.add(buenosAires);
+        CityBlock sydney = new CityBlock(200*4,0,"Sydney", CityBlock.CityClass.대도시);
+        blockArrayList.add(sydney);
+        GoldKeyBlock goldKeyBlock4 = new GoldKeyBlock(200*3,0);
+        blockArrayList.add(goldKeyBlock4);
+        CityBlock berlin = new CityBlock(200*2,0,"Berlin", CityBlock.CityClass.유럽);
+        blockArrayList.add(berlin);
+        CityBlock istanbul = new CityBlock(200,0,"Istanbul", CityBlock.CityClass.아시아);
+        blockArrayList.add(istanbul);
 
 
 
