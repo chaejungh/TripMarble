@@ -8,7 +8,7 @@ import java.util.ArrayList;
 class Marble extends JFrame{
     ArrayList<Block> blockArrayList = new ArrayList<>();
     int FRAME_WIDTH = 1200;
-
+    ArrayList<GoldKeyBlock.GoldKey> keyList = new ArrayList<>();
     class Block{
         int x;
         int y;
@@ -26,6 +26,23 @@ class Marble extends JFrame{
     }
     class AirportBlock extends Block{
 
+    }
+    class GoldKeyBlock extends Block{
+        enum GoldKey{
+            세칸뒤, 한칸뒤, 세칸앞, 한칸앞,  세계여행
+        }
+        GoldKey goldKey;
+
+        public void play(){
+            switch (goldKey){
+                case 세칸뒤 -> threeBack();
+                //~~
+            }
+        }
+        public void threeBack(){
+            //User 객체를 받아서 유저의 위치를 옮기기
+        }
+        //~~~~~
     }
     class CityBlock extends Block {
         enum CityClass{
@@ -84,7 +101,7 @@ class Marble extends JFrame{
         canvas = new MyCanvas();
         CityBlock seoul = new CityBlock(0,200,"Seoul", CityBlock.CityClass.한국);
         blockArrayList.add(seoul);
-        CityBlock taipei = new CityBlock()
+//        CityBlock taipei = new CityBlock()
         this.add(canvas);
 
 
