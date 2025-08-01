@@ -14,8 +14,40 @@ class Marble extends JFrame {
     JLabel diceResultLabel;
     Random random = new Random();
     // === [주사위 기능 끝] ===
+    int position;
+    //블럭들 전역변수로 생성
+    private DiceBlock diceBlock;
+    private CharityBlock charityPay;
+    private CharityBlock charityGet;
+    private CityBlock hongkong;
+    private GoldKeyBlock goldKeyBlock1;
+    private GoldKeyBlock goldKeyBlock2;
+    private GoldKeyBlock goldKeyBlock3;
+    private GoldKeyBlock goldKeyBlock4;
+    private CityBlock beijing;
+    private CityBlock athens;
+    private CityBlock tokyo;
+    private StartBlock startBlock;
+    private CityBlock seoul;
+    private CityBlock taipei;
+    private CityBlock stockholm;
+    private CityBlock madrid;
+    private CityBlock newYork;
+    private CityBlock singapore;
+    private CityBlock cairo;
+    private CityBlock rome;
+    private AirportBlock airport;
+    private CityBlock buenosAires;
+    private CityBlock sydney;
+    private CityBlock berlin;
+    private CityBlock istanbul;
+    
 
-    class Block {
+    class Block{
+
+    // === [주사위 기능 시작] ===
+    // === [주사위 기능 끝] ===
+        
         int x;
         int y;
         String cityName = "블럭";
@@ -72,7 +104,12 @@ class Marble extends JFrame {
         }
     }
 
-    class User {}
+    class User {
+        int x = 0;
+        int y = 750;
+        int money;
+    }
+
 
     enum GoldKey {
         세칸뒤("세칸뒤로 이동"), 두칸뒤("두칸뒤로 이동"), 한칸뒤("한칸뒤로 이동"),
@@ -135,37 +172,67 @@ class Marble extends JFrame {
     }
 
     private Canvas canvas;
-
-    public Marble() {
+    
+    public Marble(){
         super("TripMarble");
+        System.out.println("시작");
+        this.diceBlock = new DiceBlock();
+        blockArrayList.add(diceBlock);
+        this.charityPay = new CharityBlock(0,0,"기부금 기부");
+        blockArrayList.add(charityPay);
+        this.hongkong = new CityBlock(0,125,"Hongkong", CityBlock.CityClass.아시아);
+        blockArrayList.add(hongkong);
+        this.goldKeyBlock1 = new GoldKeyBlock(0,125*2);
+        blockArrayList.add(goldKeyBlock1);
+        this.beijing = new CityBlock(0,125*3, "Beijing", CityBlock.CityClass.아시아);
+        blockArrayList.add(beijing);
+        this.athens = new CityBlock(0,125*4,"Athens", CityBlock.CityClass.유럽);
+        blockArrayList.add(athens);
+        this.tokyo = new CityBlock(0,125*5,"Tokyo", CityBlock.CityClass.대도시);
+        blockArrayList.add(tokyo);
 
-        // === [보드 생성 코드 생략 없이 유지] ===
-        blockArrayList.add(new DiceBlock());
-        blockArrayList.add(new CharityBlock(0, 0, "기부금 기부"));
-        blockArrayList.add(new CityBlock(0, 125, "Hongkong", CityBlock.CityClass.아시아));
-        blockArrayList.add(new GoldKeyBlock(0, 125 * 2));
-        blockArrayList.add(new CityBlock(0, 125 * 3, "Beijing", CityBlock.CityClass.아시아));
-        blockArrayList.add(new CityBlock(0, 125 * 4, "Athens", CityBlock.CityClass.유럽));
-        blockArrayList.add(new CityBlock(0, 125 * 5, "Tokyo", CityBlock.CityClass.대도시));
-        blockArrayList.add(new StartBlock());
-        blockArrayList.add(new CityBlock(200, 125 * 6, "Seoul", CityBlock.CityClass.한국));
-        blockArrayList.add(new CityBlock(200 * 2, 125 * 6, "Taipei", CityBlock.CityClass.아시아));
-        blockArrayList.add(new GoldKeyBlock(200 * 3, 125 * 6));
-        blockArrayList.add(new CityBlock(200 * 4, 125 * 6, "Stockholm", CityBlock.CityClass.유럽));
-        blockArrayList.add(new CityBlock(200 * 5, 125 * 6, "Madrid", CityBlock.CityClass.명승지));
-        blockArrayList.add(new CharityBlock(200 * 6, 125 * 6, "기부금 받기"));
-        blockArrayList.add(new CityBlock(200 * 6, 125 * 5, "NewYork", CityBlock.CityClass.대도시));
-        blockArrayList.add(new CityBlock(200 * 6, 125 * 4, "Singapore", CityBlock.CityClass.아시아));
-        blockArrayList.add(new GoldKeyBlock(200 * 6, 125 * 3));
-        blockArrayList.add(new CityBlock(200 * 6, 125 * 2, "Cairo", CityBlock.CityClass.아시아));
-        blockArrayList.add(new CityBlock(200 * 6, 125, "Rome", CityBlock.CityClass.대도시));
-        blockArrayList.add(new AirportBlock(200 * 6, 0));
-        blockArrayList.add(new CityBlock(200 * 5, 0, "Buenos Aires", CityBlock.CityClass.명승지));
-        blockArrayList.add(new CityBlock(200 * 4, 0, "Sydney", CityBlock.CityClass.대도시));
-        blockArrayList.add(new GoldKeyBlock(200 * 3, 0));
-        blockArrayList.add(new CityBlock(200 * 2, 0, "Berlin", CityBlock.CityClass.유럽));
-        blockArrayList.add(new CityBlock(200, 0, "Istanbul", CityBlock.CityClass.아시아));
 
+        this.startBlock = new StartBlock();
+        blockArrayList.add(startBlock);
+        this.seoul = new CityBlock(200,125*6,"Seoul", CityBlock.CityClass.한국);
+        blockArrayList.add(seoul);
+        this.taipei = new CityBlock(200*2,125*6,"Taipei", CityBlock.CityClass.아시아);
+        blockArrayList.add(taipei);
+        this.goldKeyBlock2 = new GoldKeyBlock(200*3,125*6);
+        blockArrayList.add(goldKeyBlock2);
+        this.stockholm = new CityBlock(200*4,125*6, "Stockholm", CityBlock.CityClass.유럽);
+        blockArrayList.add(stockholm);
+        this.madrid = new CityBlock(200*5,125*6,"Madrid", CityBlock.CityClass.명승지);
+        blockArrayList.add(madrid);
+        this.charityGet = new CharityBlock(200*6,125*6,"기부금 받기");
+        blockArrayList.add(charityGet);
+
+
+        this.newYork = new CityBlock(200*6,125*5,"NewYork", CityBlock.CityClass.대도시);
+        blockArrayList.add(newYork);
+        this.singapore = new CityBlock(200*6,125*4,"Singapore", CityBlock.CityClass.아시아);
+        blockArrayList.add(singapore);
+        this.goldKeyBlock3 = new GoldKeyBlock(200*6,125*3);
+        blockArrayList.add(goldKeyBlock3);
+        this.cairo = new CityBlock(200*6,125*2,"Cairo", CityBlock.CityClass.아시아);
+        blockArrayList.add(cairo);
+        this.rome = new CityBlock(200*6,125,"Rome", CityBlock.CityClass.대도시);
+        blockArrayList.add(rome);
+        this.airport = new AirportBlock(200*6,0);
+        blockArrayList.add(airport);
+
+        this.buenosAires =new CityBlock(200*5,0,"Buenos Aires", CityBlock.CityClass.명승지);
+        blockArrayList.add(buenosAires);
+        this.sydney = new CityBlock(200*4,0,"Sydney", CityBlock.CityClass.대도시);
+        blockArrayList.add(sydney);
+        this.goldKeyBlock4 = new GoldKeyBlock(200*3,0);
+        blockArrayList.add(goldKeyBlock4);
+        this.berlin = new CityBlock(200*2,0,"Berlin", CityBlock.CityClass.유럽);
+        blockArrayList.add(berlin);
+        this.istanbul = new CityBlock(200,0,"Istanbul", CityBlock.CityClass.아시아);
+        blockArrayList.add(istanbul);
+
+        
         canvas = new MyCanvas();
 
         // === [주사위 기능 시작] ===
