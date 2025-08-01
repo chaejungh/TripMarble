@@ -37,6 +37,14 @@ class Marble extends JFrame{
             this.cityName = "Start";
         }
     }
+    class DiceBlock extends Block{
+        public DiceBlock(){
+            this.color = Color.GRAY;
+            this.x = 200*3;
+            this.y = 125*3;
+            this.cityName = "주사위";
+        }
+    }
     class CharityBlock extends Block{
         public CharityBlock(int x, int y, String cityName){
             this.x = x;
@@ -136,6 +144,8 @@ class Marble extends JFrame{
     public Marble(){
         super("TripMarble");
         System.out.println("시작");
+        DiceBlock diceBlock = new DiceBlock();
+        blockArrayList.add(diceBlock);
         CharityBlock charityPay = new CharityBlock(0,0,"기부금 기부");
         blockArrayList.add(charityPay);
         CityBlock hongkong = new CityBlock(0,125,"Hongkong", CityBlock.CityClass.아시아);
