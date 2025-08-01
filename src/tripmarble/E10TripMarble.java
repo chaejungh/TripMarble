@@ -4,11 +4,14 @@ package tripmarble;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 
 class Marble extends JFrame{
     ArrayList<Block> blockArrayList = new ArrayList<>();
     int FRAME_WIDTH = 1200;
-    ArrayList<GoldKeyBlock.GoldKey> keyList = new ArrayList<>();
+    ArrayList<GoldKey> allGoldKey = new ArrayList<>();
     class Block{
         int x;
         int y;
@@ -66,6 +69,37 @@ class Marble extends JFrame{
         }
 
     }
+    class User{
+
+    }
+    enum GoldKey {
+        //유저 이동
+        세칸뒤("세칸뒤로   이동"), 두칸뒤("두칸뒤로  이동"), 한칸뒤("두칸뒤로   이동"),
+        세칸앞("세칸앞으로 이동"), 두칸앞("두칸앞으로 이동"), 한칸앞("한칸앞으로 이동"),
+
+        //특정 장소로 이동
+        세계여행("Airport로 이동"), 서울로("서울로 이동"),
+        출발지로("Start로 이동"), 세계일주("세계일주를 합니다."),
+
+        //현금 ++
+        노벨평화상("노벨 평화상 수상 +30만원"), 복권당첨("복권당첨 +20만원"), 장학금("장학금 획득 +10만원"),
+        반액대매출("가장 비싼 건물을 반값에 팝니다."),
+
+        //현금 --
+        해외유학("해외유학 -10만원"), 병원비("병원 입원비 -5만원"), 과속운전("과속운전 벌금 -5만원"),
+        건물유지관리비("건물 유지관리비 납부. -(소유건물 x2)만원"),
+
+
+        우대권1("우대권"), 우대권2("우대권");    //우대권 (통행료 무료)
+        String text;
+
+        GoldKey() {
+        }
+
+        GoldKey(String text) {
+            this.text = text;
+        }
+    }
     class GoldKeyBlock extends Block{
         public GoldKeyBlock(int x, int y){
             this.color = Color.ORANGE;
@@ -73,21 +107,63 @@ class Marble extends JFrame{
             this.x = x;
             this.y = y;
         }
-        enum GoldKey{
-            세칸뒤, 한칸뒤, 세칸앞, 한칸앞,  세계여행
-        }
         GoldKey goldKey;
 
         public void play(){
             switch (goldKey){
-                case 세칸뒤 -> threeBack();
+
+                //유저이동                      기존 이동 에서 가져오기
+                //case 세칸뒤 -> //threeBack();
+                //case 두칸뒤 -> //twoBack();
+                //case 한칸뒤 -> //oneBack();
+                //case 한칸앞 -> //oneFront();
+                //case 두칸앞 -> //twoFront();
+                //case 세칸앞 -> //threeFront();
+
+                //특정장소로 이동
+                //case 세계여행 -> //Move(AirportBlock);
+                //case 서울로 ->   //Move(한국);
+                //case 출발지로 -> //Move(StartingPoint);
+                //case 세계일주 -> //getcash.Charity; cash.Charity=0;  +20만
+
+                //현금++
+//                case 노벨평화상 ->  //user cash++ 30만
+//                case 복권당첨 ->    //user cash++ 20만
+//                case 장학금 ->      //user cash++ 10만
+//                case 반액대매출 ->   //user.sell highest building, user.cash += cost(this.building)/2
+//
+//                //현금--
+//                case 해외유학 ->  //user cash-- 10만
+//                case 병원비 ->    //user cash-- 5만
+//                case 과속운전 ->  //user cash-- 5만
+//                case 건물유지관리비 -> // user.cash = cash - (user.소유중 건물 x2만)
+//
+//                //우대권
+//                case 우대권 -> //user.우대권 true _ 통행료 = 0;      우대권은 게임내에 2개까지 존재
+                //case 우대권2 -> //user.우대권 true _ 통행료 = 0;      우대권은 게임내에 2개까지 존재
                 //~~
             }
         }
+
+        private void twoBack() {
+        }
+
         public void threeBack(){
             //User 객체를 받아서 유저의 위치를 옮기기
         }
         //~~~~~
+
+        private LinkedList<GoldKey> deck; //골드키를 뽑고 다시 넣을 덱
+
+        private List<GoldKey> playerHands; //플레이어가 소유한 카드 : 우대권
+
+        public GoldKeyBlock() {
+            //enum의 모든 카드 추가
+            for(GoldKey goldkey : GoldKey.values()){
+                allGoldKey.add(goldkey);
+            }
+            Collections.shuffle(allGoldKey);  //카드 섞기
+        }
     }
     class CityBlock extends Block {
         enum CityClass{
@@ -217,7 +293,6 @@ class Marble extends JFrame{
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.setVisible(true);
     }
-
 
 
     public void move(int diceRoll){
