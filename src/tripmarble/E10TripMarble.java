@@ -69,7 +69,7 @@ class Marble extends JFrame{
 
     }
     class User{
-        List<GoldKey> goldKeys=new ArrayList<>();
+
     }
     enum GoldKey {
         //유저 이동
