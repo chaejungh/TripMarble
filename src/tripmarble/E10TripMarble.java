@@ -6,32 +6,41 @@ import java.awt.*;
 import java.util.ArrayList;
 
 class Marble extends JFrame{
-    ArrayList<CityBlock> blockArrayList = new ArrayList<>();
+    ArrayList<Block> blockArrayList = new ArrayList<>();
     int FRAME_WIDTH = 1200;
 
-
-    class CityBlock {
-        enum CityClass{
-            아시아, 유럽, 명승지, 대도시, 한국
-        }
+    class Block{
         int x;
         int y;
         String cityName;
+        Color color;
         int width =200;
         int height =125;
-        Color color;
+
+    }
+    class StartBlock extends Block{
+
+    }
+    class CharityBlock extends Block{
+
+    }
+    class AirportBlock extends Block{
+
+    }
+    class CityBlock extends Block {
+        enum CityClass{
+            아시아, 유럽, 명승지, 대도시, 한국
+        }
         int buildingPrice;
         boolean isSoldHouse;
         boolean isSoldBuilding;
         boolean isSoldHotel;
         CityClass cityClass;
 
-        public CityBlock(int x, int y, String cityName, int width, int height, CityClass cityClass) {
+        public CityBlock(int x, int y, String cityName, CityClass cityClass) {
             this.x = x;
             this.y = y;
             this.cityName = cityName;
-            this.width = width;
-            this.height = height;
             switch (cityClass){
                 case 아시아:
                     color = Color.RED;
@@ -49,7 +58,10 @@ class Marble extends JFrame{
                     color = Color.BLUE;
                     buildingPrice = 20;
                     break;
-
+                case 한국:
+                    color = Color.BLACK;
+                    buildingPrice = 100;
+                    break;
             }
         }
     }
@@ -59,7 +71,7 @@ class Marble extends JFrame{
         }
         @Override
         public void paint(Graphics g) {
-            for (CityBlock b: blockArrayList){
+            for (Block b: blockArrayList){
                 g.setColor(b.color);
                 g.drawRect(b.x,b.y,b.width,b.height);
                 g.drawString(b.cityName,b.x+25,b.y+25);
@@ -70,8 +82,9 @@ class Marble extends JFrame{
     public Marble(){
         super("TripMarble");
         canvas = new MyCanvas();
-        CityBlock seoul = new CityBlock(0,200,"Seoul",200,125, CityBlock.CityClass.한국);
+        CityBlock seoul = new CityBlock(0,200,"Seoul", CityBlock.CityClass.한국);
         blockArrayList.add(seoul);
+        CityBlock taipei = new CityBlock()
         this.add(canvas);
 
 
