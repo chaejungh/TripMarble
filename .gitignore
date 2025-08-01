@@ -1,4 +1,4 @@
-.gitignore
+.idea
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
