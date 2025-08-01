@@ -47,6 +47,7 @@ class Marble extends JFrame{
             //병합 테스트용 수정
             //병합 테스트용 수정
         }
+
     }
     class CharityBlock extends Block{
         public CharityBlock(int x, int y, String cityName){
