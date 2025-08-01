@@ -12,6 +12,35 @@ class Marble extends JFrame{
     ArrayList<Block> blockArrayList = new ArrayList<>();
     int FRAME_WIDTH = 1200;
     ArrayList<GoldKey> allGoldKey = new ArrayList<>();
+    int position;
+    //블럭들 전역변수로 생성
+    private DiceBlock diceBlock;
+    private CharityBlock charityPay;
+    private CharityBlock charityGet;
+    private CityBlock hongkong;
+    private GoldKeyBlock goldKeyBlock1;
+    private GoldKeyBlock goldKeyBlock2;
+    private GoldKeyBlock goldKeyBlock3;
+    private GoldKeyBlock goldKeyBlock4;
+    private CityBlock beijing;
+    private CityBlock athens;
+    private CityBlock tokyo;
+    private StartBlock startBlock;
+    private CityBlock seoul;
+    private CityBlock taipei;
+    private CityBlock stockholm;
+    private CityBlock madrid;
+    private CityBlock newYork;
+    private CityBlock singapore;
+    private CityBlock cairo;
+    private CityBlock rome;
+    private AirportBlock airport;
+    private CityBlock buenosAires;
+    private CityBlock sydney;
+    private CityBlock berlin;
+    private CityBlock istanbul;
+
+
     class Block{
         int x;
         int y;
@@ -69,6 +98,10 @@ class Marble extends JFrame{
 
     }
     class User{
+        int x=0;
+        int y=750;
+        int money;
+
 
     }
     enum GoldKey {
@@ -220,64 +253,64 @@ class Marble extends JFrame{
         }
     }
     private Canvas canvas;
+
     public Marble(){
         super("TripMarble");
         System.out.println("시작");
-        DiceBlock diceBlock = new DiceBlock();
+        this.diceBlock = new DiceBlock();
         blockArrayList.add(diceBlock);
-        CharityBlock charityPay = new CharityBlock(0,0,"기부금 기부");
+        this.charityPay = new CharityBlock(0,0,"기부금 기부");
         blockArrayList.add(charityPay);
-        CityBlock hongkong = new CityBlock(0,125,"Hongkong", CityBlock.CityClass.아시아);
+        this.hongkong = new CityBlock(0,125,"Hongkong", CityBlock.CityClass.아시아);
         blockArrayList.add(hongkong);
-        GoldKeyBlock goldKeyBlock1 = new GoldKeyBlock(0,125*2);
+        this.goldKeyBlock1 = new GoldKeyBlock(0,125*2);
         blockArrayList.add(goldKeyBlock1);
-        CityBlock beijing = new CityBlock(0,125*3, "Beijing", CityBlock.CityClass.아시아);
+        this.beijing = new CityBlock(0,125*3, "Beijing", CityBlock.CityClass.아시아);
         blockArrayList.add(beijing);
-        CityBlock athens = new CityBlock(0,125*4,"Athens", CityBlock.CityClass.유럽);
+        this.athens = new CityBlock(0,125*4,"Athens", CityBlock.CityClass.유럽);
         blockArrayList.add(athens);
-        CityBlock tokyo = new CityBlock(0,125*5,"Tokyo", CityBlock.CityClass.대도시);
+        this.tokyo = new CityBlock(0,125*5,"Tokyo", CityBlock.CityClass.대도시);
         blockArrayList.add(tokyo);
 
 
-        StartBlock startBlock = new StartBlock();
+        this.startBlock = new StartBlock();
         blockArrayList.add(startBlock);
-        System.out.println(startBlock);
-        CityBlock seoul = new CityBlock(200,125*6,"Seoul", CityBlock.CityClass.한국);
+        this.seoul = new CityBlock(200,125*6,"Seoul", CityBlock.CityClass.한국);
         blockArrayList.add(seoul);
-        CityBlock taipei = new CityBlock(200*2,125*6,"Taipei", CityBlock.CityClass.아시아);
+        this.taipei = new CityBlock(200*2,125*6,"Taipei", CityBlock.CityClass.아시아);
         blockArrayList.add(taipei);
-        GoldKeyBlock goldKeyBlock2 = new GoldKeyBlock(200*3,125*6);
+        this.goldKeyBlock2 = new GoldKeyBlock(200*3,125*6);
         blockArrayList.add(goldKeyBlock2);
-        CityBlock stockholm = new CityBlock(200*4,125*6, "Stockholm", CityBlock.CityClass.유럽);
+        this.stockholm = new CityBlock(200*4,125*6, "Stockholm", CityBlock.CityClass.유럽);
         blockArrayList.add(stockholm);
-        CityBlock madrid = new CityBlock(200*5,125*6,"Madrid", CityBlock.CityClass.명승지);
+        this.madrid = new CityBlock(200*5,125*6,"Madrid", CityBlock.CityClass.명승지);
         blockArrayList.add(madrid);
-        CharityBlock charityGet = new CharityBlock(200*6,125*6,"기부금 받기");
+        this.charityGet = new CharityBlock(200*6,125*6,"기부금 받기");
         blockArrayList.add(charityGet);
 
 
-        CityBlock newYork = new CityBlock(200*6,125*5,"NewYork", CityBlock.CityClass.대도시);
+        this.newYork = new CityBlock(200*6,125*5,"NewYork", CityBlock.CityClass.대도시);
         blockArrayList.add(newYork);
-        CityBlock singapore = new CityBlock(200*6,125*4,"Singapore", CityBlock.CityClass.아시아);
+        this.singapore = new CityBlock(200*6,125*4,"Singapore", CityBlock.CityClass.아시아);
         blockArrayList.add(singapore);
-        GoldKeyBlock goldKeyBlock3 = new GoldKeyBlock(200*6,125*3);
+        this.goldKeyBlock3 = new GoldKeyBlock(200*6,125*3);
         blockArrayList.add(goldKeyBlock3);
-        CityBlock cairo = new CityBlock(200*6,125*2,"Cairo", CityBlock.CityClass.아시아);
+        this.cairo = new CityBlock(200*6,125*2,"Cairo", CityBlock.CityClass.아시아);
         blockArrayList.add(cairo);
-        CityBlock rome = new CityBlock(200*6,125,"Rome", CityBlock.CityClass.대도시);
+        this.rome = new CityBlock(200*6,125,"Rome", CityBlock.CityClass.대도시);
         blockArrayList.add(rome);
-        AirportBlock airport = new AirportBlock(200*6,0);
+        this.airport = new AirportBlock(200*6,0);
         blockArrayList.add(airport);
 
-        CityBlock buenosAires =new CityBlock(200*5,0,"Buenos Aires", CityBlock.CityClass.명승지);
+        this.buenosAires =new CityBlock(200*5,0,"Buenos Aires", CityBlock.CityClass.명승지);
         blockArrayList.add(buenosAires);
-        CityBlock sydney = new CityBlock(200*4,0,"Sydney", CityBlock.CityClass.대도시);
+        this.sydney = new CityBlock(200*4,0,"Sydney", CityBlock.CityClass.대도시);
         blockArrayList.add(sydney);
-        GoldKeyBlock goldKeyBlock4 = new GoldKeyBlock(200*3,0);
+        this.goldKeyBlock4 = new GoldKeyBlock(200*3,0);
         blockArrayList.add(goldKeyBlock4);
-        CityBlock berlin = new CityBlock(200*2,0,"Berlin", CityBlock.CityClass.유럽);
+        this.berlin = new CityBlock(200*2,0,"Berlin", CityBlock.CityClass.유럽);
         blockArrayList.add(berlin);
-        CityBlock istanbul = new CityBlock(200,0,"Istanbul", CityBlock.CityClass.아시아);
+        this.istanbul = new CityBlock(200,0,"Istanbul", CityBlock.CityClass.아시아);
         blockArrayList.add(istanbul);
 
 
@@ -295,6 +328,9 @@ class Marble extends JFrame{
 
 
     public void move(int diceRoll){
+        int startLocation = blockArrayList.indexOf(startBlock);
+        User.position =startLocation+diceRoll;
+
 
 
     }
