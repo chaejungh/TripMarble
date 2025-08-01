@@ -67,6 +67,11 @@ class Marble extends JFrame {
                     ", height=" + height +
                     '}';
         }
+        public void play (){
+
+
+        }
+
     }
 
     class StartBlock extends Block {
@@ -95,7 +100,6 @@ class Marble extends JFrame {
             this.color = Color.GRAY;
         }
     }
-
     class AirportBlock extends Block {
         public AirportBlock(int x, int y) {
             this.x = x;
@@ -104,7 +108,6 @@ class Marble extends JFrame {
             this.color = Color.GRAY;
         }
     }
-
     class User {
         int x = 0;
         int y = 750;
@@ -113,10 +116,7 @@ class Marble extends JFrame {
             this.x = x;
             this.y = y;
         }
-
     }
-
-
     enum GoldKey {
         세칸뒤("세칸뒤로 이동"), 두칸뒤("두칸뒤로 이동"), 한칸뒤("한칸뒤로 이동"),
         세칸앞("세칸앞으로 이동"), 두칸앞("두칸앞으로 이동"), 한칸앞("한칸앞으로 이동"),
@@ -127,6 +127,7 @@ class Marble extends JFrame {
         해외유학("해외유학 -10만원"), 병원비("병원 입원비 -5만원"), 과속운전("과속운전 벌금 -5만원"),
         건물유지관리비("건물 유지관리비 납부. -(소유건물 x2)만원"),
         우대권1("우대권"), 우대권2("우대권");
+
 
         String text;
         GoldKey(String text) {
@@ -140,6 +141,17 @@ class Marble extends JFrame {
             this.cityName = "황금열쇠";
             this.x = x;
             this.y = y;
+
+        }
+        @Override
+        public void play() {
+            GoldKey pick=allGoldKey.remove(0); //{c,c,c,c,c,..,c,c}
+            if(!(pick==GoldKey.우대권1 || pick==GoldKey.우대권2)) allGoldKey.add(pick);
+            //#1 골드키 블럭에 올라갔을때
+
+
+            //#2 일반 맵에 올랄갔을때
+
         }
     }
 
@@ -297,7 +309,6 @@ class Marble extends JFrame {
 
     public void move(int diceRoll) {
         System.out.println("주사위 값: " + diceRoll + "칸 이동");
-        // 추후 말 이동 기능 구현
         start+=diceRoll;
         if (start>=24){
             start-=24;
@@ -306,8 +317,6 @@ class Marble extends JFrame {
         user1.x = userPos.x;
         user1.y = userPos.y;
         canvas.repaint();
-
-
     }
 }
 
