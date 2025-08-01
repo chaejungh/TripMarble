@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/TripMarble.iml" filepath="$PROJECT_DIR$/TripMarble.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BlueMarble.iml" filepath="$PROJECT_DIR$/BlueMarble.iml" />
     </modules>
   </component>
 </project>
