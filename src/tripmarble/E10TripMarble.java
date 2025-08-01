@@ -43,6 +43,9 @@ class Marble extends JFrame{
             this.x = 200*3;
             this.y = 125*3;
             this.cityName = "주사위";
+            //병합 테스트용 수정
+            //병합 테스트용 수정
+            //병합 테스트용 수정
         }
     }
     class CharityBlock extends Block{
