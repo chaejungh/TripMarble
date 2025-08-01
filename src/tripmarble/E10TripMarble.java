@@ -292,7 +292,6 @@ class Marble extends JFrame{
     }
 
 
-
     public void move(int diceRoll){
 
 
