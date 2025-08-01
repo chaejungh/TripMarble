@@ -329,7 +329,7 @@ class Marble extends JFrame{
 
     public void move(int diceRoll){
         int startLocation = blockArrayList.indexOf(startBlock);
-        User.position =startLocation+diceRoll;
+//        User.position =startLocation+diceRoll;
 
 
 
