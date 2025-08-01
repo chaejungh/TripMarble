@@ -5,6 +5,8 @@ import java.awt.*;
 import java.util.*;
 
 class Marble extends JFrame {
+    User user1;
+    int start;
     ArrayList<Block> blockArrayList = new ArrayList<>();
     int FRAME_WIDTH = 1200;
     ArrayList<GoldKey> allGoldKey = new ArrayList<>();
@@ -14,7 +16,6 @@ class Marble extends JFrame {
     JLabel diceResultLabel;
     Random random = new Random();
     // === [주사위 기능 끝] ===
-    int position;
     //블럭들 전역변수로 생성
     private DiceBlock diceBlock;
     private CharityBlock charityPay;
@@ -108,6 +109,11 @@ class Marble extends JFrame {
         int x = 0;
         int y = 750;
         int money;
+        User(int x,int y){
+            this.x = x;
+            this.y = y;
+        }
+
     }
 
 
@@ -158,17 +164,41 @@ class Marble extends JFrame {
     }
 
     class MyCanvas extends Canvas {
+        private Image offScreenImage;
+        @Override
+        public void update(Graphics g) {
+            // update는 paint보다 먼저 호출되므로 여기서 버퍼에 먼저 그린다
+            paint(g);
+        }
+
         @Override
         public void paint(Graphics g) {
+            if (offScreenImage == null) {
+                offScreenImage = createImage(getWidth(), getHeight());
+            }
+
+            // 버퍼에 그리기
+            Graphics offG = offScreenImage.getGraphics();
+            // 배경 초기화
+            offG.setColor(Color.WHITE);
+            offG.fillRect(0, 0, getWidth(), getHeight());
+
             if (blockArrayList == null) return;
             for (Block b : blockArrayList) {
                 if (b.cityName == null) continue;
-                g.setColor(b.color);
-                g.fillRect(b.x, b.y, b.width, b.height);
-                g.setColor(Color.white);
-                g.drawString(b.cityName, b.x + 75, b.y + 62);
+                offG.setColor(b.color);
+                offG.fillRect(b.x, b.y, b.width, b.height);
+                offG.setColor(Color.white);
+                offG.drawString(b.cityName, b.x + 75, b.y + 62);
             }
+            offG.setColor(Color.cyan);
+            offG.fillRect(user1.x, user1.y, 50,50);
+            g.drawImage(offScreenImage, 0, 0, this);
+
+            offG.dispose(); // 리소스 정리
+
         }
+
     }
 
     private Canvas canvas;
@@ -176,8 +206,7 @@ class Marble extends JFrame {
     public Marble(){
         super("TripMarble");
         System.out.println("시작");
-        this.diceBlock = new DiceBlock();
-        blockArrayList.add(diceBlock);
+        this.user1 = new User(0,750);
         this.charityPay = new CharityBlock(0,0,"기부금 기부");
         blockArrayList.add(charityPay);
         this.hongkong = new CityBlock(0,125,"Hongkong", CityBlock.CityClass.아시아);
@@ -232,6 +261,7 @@ class Marble extends JFrame {
         this.istanbul = new CityBlock(200,0,"Istanbul", CityBlock.CityClass.아시아);
         blockArrayList.add(istanbul);
 
+        this.start = blockArrayList.indexOf(startBlock);
         
         canvas = new MyCanvas();
 
@@ -244,6 +274,8 @@ class Marble extends JFrame {
             int dice = random.nextInt(6) + 1;
             diceResultLabel.setText("결과: " + dice);
             move(dice);
+            canvas.repaint();
+
         });
 
         JPanel rightPanel = new JPanel();
@@ -253,11 +285,8 @@ class Marble extends JFrame {
         rightPanel.add(diceButton);
         rightPanel.add(Box.createVerticalStrut(20));
         rightPanel.add(diceResultLabel);
-        // === [주사위 기능 끝] ===
-
         this.setLayout(new BorderLayout());
         this.add(canvas, BorderLayout.CENTER);
-        // === [주사위 기능 시작] ===
         this.add(rightPanel, BorderLayout.EAST);
         // === [주사위 기능 끝] ===
 
@@ -269,6 +298,16 @@ class Marble extends JFrame {
     public void move(int diceRoll) {
         System.out.println("주사위 값: " + diceRoll + "칸 이동");
         // 추후 말 이동 기능 구현
+        start+=diceRoll;
+        if (start>=24){
+            start-=24;
+        }
+        Block userPos = blockArrayList.get(start);
+        user1.x = userPos.x;
+        user1.y = userPos.y;
+        canvas.repaint();
+
+
     }
 }
 
