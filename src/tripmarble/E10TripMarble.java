@@ -12,22 +12,55 @@ class Marble extends JFrame{
     class Block{
         int x;
         int y;
-        String cityName;
+        String cityName="블럭";
         Color color;
         int width =200;
         int height =125;
 
+        @Override
+        public String toString() {
+            return "Block{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    ", cityName='" + cityName + '\'' +
+                    ", color=" + color +
+                    ", width=" + width +
+                    ", height=" + height +
+                    '}';
+        }
     }
     class StartBlock extends Block{
-
+        public StartBlock() {
+            this.color = Color.BLACK;
+            this.x = 0;
+            this.y = 750;
+            this.cityName = "Start";
+        }
     }
     class CharityBlock extends Block{
-
+        public CharityBlock(int x, int y, String cityName){
+            this.x = x;
+            this.y = y;
+            this.cityName =cityName;
+            this.color = Color.GRAY;
+        }
     }
     class AirportBlock extends Block{
+        public AirportBlock(int x, int y) {
+            this.x = x;
+            this.y = y;
+            this.cityName = "Airport";
+            this.color = Color.GRAY;
+        }
 
     }
     class GoldKeyBlock extends Block{
+        public GoldKeyBlock(int x, int y){
+            this.color = Color.ORANGE;
+            this.cityName = "황금열쇠";
+            this.x = x;
+            this.y = y;
+        }
         enum GoldKey{
             세칸뒤, 한칸뒤, 세칸앞, 한칸앞,  세계여행
         }
@@ -88,24 +121,69 @@ class Marble extends JFrame{
         }
         @Override
         public void paint(Graphics g) {
+            if (blockArrayList==null)return;
             for (Block b: blockArrayList){
+                if(b.cityName==null) continue;
+                System.out.println(b);
                 g.setColor(b.color);
-                g.drawRect(b.x,b.y,b.width,b.height);
-                g.drawString(b.cityName,b.x+25,b.y+25);
+                g.fillRect(b.x,b.y,b.width,b.height);
+                g.setColor(Color.white);
+                g.drawString(b.cityName, b.x+75,b.y+62);
             }
         }
     }
     private Canvas canvas;
     public Marble(){
         super("TripMarble");
-        canvas = new MyCanvas();
-        CityBlock seoul = new CityBlock(0,200,"Seoul", CityBlock.CityClass.한국);
+        System.out.println("시작");
+        CharityBlock charityPay = new CharityBlock(0,0,"기부금 기부");
+        blockArrayList.add(charityPay);
+        CityBlock hongkong = new CityBlock(0,125,"Hongkong", CityBlock.CityClass.아시아);
+        blockArrayList.add(hongkong);
+        GoldKeyBlock goldKeyBlock1 = new GoldKeyBlock(0,125*2);
+        blockArrayList.add(goldKeyBlock1);
+        CityBlock beijing = new CityBlock(0,125*3, "Beijing", CityBlock.CityClass.아시아);
+        blockArrayList.add(beijing);
+        CityBlock athens = new CityBlock(0,125*4,"Athens", CityBlock.CityClass.유럽);
+        blockArrayList.add(athens);
+        CityBlock tokyo = new CityBlock(0,125*5,"Tokyo", CityBlock.CityClass.대도시);
+        blockArrayList.add(tokyo);
+
+
+        StartBlock startBlock = new StartBlock();
+        blockArrayList.add(startBlock);
+        System.out.println(startBlock);
+        CityBlock seoul = new CityBlock(200,125*6,"Seoul", CityBlock.CityClass.한국);
         blockArrayList.add(seoul);
-//        CityBlock taipei = new CityBlock()
+        CityBlock taipei = new CityBlock(200*2,125*6,"Taipei", CityBlock.CityClass.아시아);
+        blockArrayList.add(taipei);
+        GoldKeyBlock goldKeyBlock2 = new GoldKeyBlock(200*3,125*6);
+        blockArrayList.add(goldKeyBlock2);
+        CityBlock stockholm = new CityBlock(200*4,125*6, "Stockholm", CityBlock.CityClass.유럽);
+        blockArrayList.add(stockholm);
+        CityBlock madrid = new CityBlock(200*5,125*6,"Madrid", CityBlock.CityClass.명승지);
+        blockArrayList.add(madrid);
+        CharityBlock charityGet = new CharityBlock(200*6,125*6,"기부금 받기");
+        blockArrayList.add(charityGet);
+
+
+        CityBlock newYork = new CityBlock(200*6,125*5,"NewYork", CityBlock.CityClass.대도시);
+        blockArrayList.add(newYork);
+        CityBlock singapore = new CityBlock(200*6,125*4,"Singapore", CityBlock.CityClass.아시아);
+        blockArrayList.add(singapore);
+        GoldKeyBlock goldKeyBlock3 = new GoldKeyBlock(200*6,125*3);
+        blockArrayList.add(goldKeyBlock3);
+        CityBlock cairo = new CityBlock(200*6,125*2,"Cairo", CityBlock.CityClass.아시아);
+        blockArrayList.add(cairo);
+
+
+
+
+
+
+        canvas = new MyCanvas();
+
         this.add(canvas);
-
-
-
 
 
         this.setBounds(0,0,1920,1080);
