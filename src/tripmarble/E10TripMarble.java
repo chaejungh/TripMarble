@@ -8,6 +8,7 @@ import java.util.List;
 class Marble extends JFrame {
     User user1;
     int start;
+    final int START_CASH = 300*100*100;
     ArrayList<Block> blockArrayList = new ArrayList<>();
     int FRAME_WIDTH = 1200;
     ArrayList<GoldKey> allGoldKey = new ArrayList<>();
@@ -15,6 +16,7 @@ class Marble extends JFrame {
     // === [주사위 기능 시작] ===
     JButton diceButton;
     JLabel diceResultLabel;
+    JLabel player1;
     Random random = new Random();
     // === [주사위 기능 끝] ===
     //블럭들 전역변수로 생성
@@ -115,11 +117,14 @@ class Marble extends JFrame {
     class User {  //건물 리스트 추가 필요
         int x = 0;
         int y = 750;
-        int cash;
+        int cash = START_CASH;
 
         User(int x, int y) {
             this.x = x;
             this.y = y;
+        }
+        User(int cash){
+            this.cash = cash;
         }
     }
 
@@ -398,6 +403,7 @@ class Marble extends JFrame {
         // === [주사위 기능 시작] ===
         diceButton = new JButton("🎲 주사위 굴리기");
         diceResultLabel = new JLabel("결과: ", SwingConstants.CENTER);
+        player1 = new JLabel("Player 1: "+new User(START_CASH).cash/10000+"만원", SwingConstants.CENTER);
         diceResultLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 
         diceButton.addActionListener(e -> {
@@ -415,6 +421,7 @@ class Marble extends JFrame {
         rightPanel.add(diceButton);
         rightPanel.add(Box.createVerticalStrut(20));
         rightPanel.add(diceResultLabel);
+        rightPanel.add(player1);
         this.setLayout(new BorderLayout());
         this.add(canvas, BorderLayout.CENTER);
         this.add(rightPanel, BorderLayout.EAST);
@@ -436,6 +443,18 @@ class Marble extends JFrame {
         user1.x = userPos.x;
         user1.y = userPos.y;
         canvas.repaint();
+    }
+    public CityBlock.CityClass checkPosition(){
+        CityBlock.CityClass checkPosition=null;
+        for (Block b: blockArrayList){
+            if(! (b instanceof CityBlock))continue;
+            CityBlock cityBlock=(CityBlock) b;
+            if (user1.x ==b.x && user1.y == b.y){
+                //return b.;
+                return cityBlock.cityClass;
+            }
+        }
+        return checkPosition;
     }
 }
 
