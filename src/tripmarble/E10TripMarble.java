@@ -61,14 +61,7 @@ class Marble extends JFrame {
 
         @Override
         public String toString() {
-            return "Block{" +
-                    "x=" + x +
-                    ", y=" + y +
-                    ", cityName='" + cityName + '\'' +
-                    ", color=" + color +
-                    ", width=" + width +
-                    ", height=" + height +
-                    '}';
+            return "Block{" + "x=" + x + ", y=" + y + ", cityName='" + cityName + '\'' + ", color=" + color + ", width=" + width + ", height=" + height + '}';
         }
 
         public void play() {
@@ -118,13 +111,19 @@ class Marble extends JFrame {
         int x = 0;
         int y = 750;
         int cash = START_CASH;
-
+        Block userPos;
+        int turnCnt;
         User(int x, int y) {
             this.x = x;
             this.y = y;
         }
         User(int cash){
             this.cash = cash;
+        }
+
+        @Override
+        public String toString() {
+            return "User{" + "x:" + x + ", y:" + y + ", cash:" + cash + ", userPos:" + userPos + '}';
         }
     }
 
@@ -265,6 +264,15 @@ class Marble extends JFrame {
 
         int buildingPrice;
         CityClass cityClass;
+        int visitCnt;
+        @Override
+        public String toString() {
+            return super.toString()+",CityBlock{" +
+                    "buildingPrice=" + buildingPrice +
+                    ", cityClass=" + cityClass +
+                    "visitCnt="+visitCnt+
+                    '}';
+        }
 
         public CityBlock(int x, int y, String cityName, CityClass cityClass) {
             this.x = x;
@@ -320,6 +328,7 @@ class Marble extends JFrame {
             if (blockArrayList == null) return;
             for (Block b : blockArrayList) {
                 if (b.cityName == null) continue;
+
                 offG.setColor(b.color);
                 offG.fillRect(b.x, b.y, b.width, b.height);
                 offG.setColor(Color.white);
@@ -327,6 +336,28 @@ class Marble extends JFrame {
             }
             offG.setColor(Color.cyan);
             offG.fillRect(user1.x, user1.y, 50, 50);
+            offG.setColor(Color.cyan);
+            for (Block b: blockArrayList){
+                if (!(b instanceof CityBlock))continue;
+                CityBlock cB = (CityBlock)b;
+                //System.out.println(cB);
+                switch (cB.visitCnt){
+                    case 1 :
+                        offG.setColor(Color.WHITE);
+                        offG.fillArc(cB.x+150, cB.y+75,50,50,50,150 );//이미지로 바꿔야댐
+                        System.out.println("빌딩 :"+cB.cityName);
+                        break;
+                    case 2 :
+                        offG.setColor(Color.ORANGE);
+                        offG.fillArc(cB.x+150, cB.y+75,50,50,50,300 );//이미지로 바꿔야댐
+                        break;
+                    case 3 :
+                        offG.setColor(Color.cyan);
+                        offG.fillOval(cB.x+150, cB.y+75,50,50);//이미지로 바꿔야댐
+                        break;
+                }
+            }
+
             g.drawImage(offScreenImage, 0, 0, this);
 
             offG.dispose(); // 리소스 정리
@@ -403,13 +434,15 @@ class Marble extends JFrame {
         // === [주사위 기능 시작] ===
         diceButton = new JButton("🎲 주사위 굴리기");
         diceResultLabel = new JLabel("결과: ", SwingConstants.CENTER);
-        player1 = new JLabel("Player 1: "+new User(START_CASH).cash/10000+"만원", SwingConstants.CENTER);
+        player1 = new JLabel("Player 1: "+new User(START_CASH).cash+"원("+new User(START_CASH).cash/10000+" 만원)", SwingConstants.CENTER);
         diceResultLabel.setFont(new Font("맑은 고딕", Font.BOLD, 18));
 
         diceButton.addActionListener(e -> {
             int dice = random.nextInt(6) + 1;
             diceResultLabel.setText("결과: " + dice);
             move(dice);
+            build(user1.userPos);
+            System.out.println(user1);
             canvas.repaint();
 
         });
@@ -438,24 +471,38 @@ class Marble extends JFrame {
         start += diceRoll;
         if (start >= 24) {
             start -= 24;
+            user1.turnCnt++;
+            user1.cash += 300000;
+            player1.setText("Player 1: "+user1.cash+"원("+user1.cash/10000+" 만원)");
         }
         Block userPos = blockArrayList.get(start);
         user1.x = userPos.x;
         user1.y = userPos.y;
+        user1.userPos=userPos;
         canvas.repaint();
     }
-    public CityBlock.CityClass checkPosition(){
-        CityBlock.CityClass checkPosition=null;
-        for (Block b: blockArrayList){
-            if(! (b instanceof CityBlock))continue;
-            CityBlock cityBlock=(CityBlock) b;
-            if (user1.x ==b.x && user1.y == b.y){
-                //return b.;
-                return cityBlock.cityClass;
-            }
+    public void build(Block userPos){
+        if (! (userPos instanceof CityBlock)){return;}
+        CityBlock b = (CityBlock) userPos;
+        int priceMul = 0;
+        String buildingType = "";
+        switch (b.visitCnt){
+            case 0 : priceMul = 1;buildingType = "주택";break;
+            case 1 : priceMul = 3;buildingType = "빌딩";break;
+            case 2 : priceMul = 5;buildingType = "호텔";break;
+            default : priceMul = 1;buildingType = "주택";break;
         }
-        return checkPosition;
+        int yesNo = JOptionPane.showConfirmDialog(Marble.this,"건물을 지으시겠습니까?\n가격: "+b.buildingPrice*priceMul,"건물 건설",JOptionPane.YES_NO_OPTION);
+        //YES ==0, NO == 1
+        if (yesNo ==0 &&(user1.cash)>=b.buildingPrice*priceMul*10000){
+            b.visitCnt++;//블럭 방문 횟수 0부터 1씩 증가
+            user1.cash -= b.buildingPrice*priceMul*10000;
+            player1.setText("Player 1: "+user1.cash+"원("+user1.cash/10000+" 만원)");
+            JOptionPane.showMessageDialog(Marble.this, buildingType+"이 건설, "+b.buildingPrice*priceMul*10000+"원이 차감됐습니다");
+            canvas.repaint();
+        }else JOptionPane.showMessageDialog(Marble.this,"건설이 취소됩니다");
     }
+
 }
 
 public class E10TripMarble {
